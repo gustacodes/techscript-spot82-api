@@ -1,0 +1,1 @@
+# techscript-spot82-api
