@@ -1,6 +1,6 @@
-package com.parking82.api.respository;
+package com.techscript.spot82.respository;
 
-import com.parking82.api.entities.Usuario;
+import com.techscript.spot82.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

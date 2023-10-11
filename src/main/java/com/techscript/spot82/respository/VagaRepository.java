@@ -1,6 +1,6 @@
-package com.parking82.api.respository;
+package com.techscript.spot82.respository;
 
-import com.parking82.api.entities.Vaga;
+import com.techscript.spot82.entities.Vaga;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface VagaRepository extends JpaRepository<Vaga, Long> {

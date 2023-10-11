@@ -1,4 +1,4 @@
-package com.parking82.api.services;
+package com.techscript.spot82.services;
 
 import java.text.DecimalFormat;
 import java.time.Duration;
@@ -6,14 +6,14 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import com.parking82.api.entities.Vaga;
-import com.parking82.api.respository.PagamentoRepository;
-import com.parking82.api.respository.VagaRepository;
+import com.techscript.spot82.entities.Vaga;
+import com.techscript.spot82.respository.PagamentoRepository;
+import com.techscript.spot82.respository.VagaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.parking82.api.entities.Cliente;
-import com.parking82.api.respository.ClienteRepository;
+import com.techscript.spot82.entities.Cliente;
+import com.techscript.spot82.respository.ClienteRepository;
 
 @Service
 public class ClienteServices {
@@ -32,7 +32,7 @@ public class ClienteServices {
 
     public Cliente save(Cliente cliente) {
 
-        cliente.getVaga().setStatus("Ocupada");
+        cliente.getVagaCliente().setStatus("Ocupada");
         return clienteRepository.save(cliente);
 
     }
@@ -45,7 +45,7 @@ public class ClienteServices {
 
     public Cliente findByPlate(String placa) {
 
-        return clienteRepository.findByPlate(placa);
+        return clienteRepository.findByPlaca(placa);
 
     }
 

@@ -1,23 +1,20 @@
-package com.parking82.api.entities;
+package com.techscript.spot82.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Data
-public class UserRole implements GrantedAuthority {
+public class Pagamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String role;
+    private String data;
+    private String formaDePagamento;
+    private Double pagamento;
 
-    @Override
-    public String getAuthority() {
-        return role;
-    }
 }

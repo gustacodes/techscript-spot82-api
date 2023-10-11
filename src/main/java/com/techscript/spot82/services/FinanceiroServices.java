@@ -1,6 +1,6 @@
-package com.parking82.api.services;
+package com.techscript.spot82.services;
 
-import com.parking82.api.respository.PagamentoRepository;
+import com.techscript.spot82.respository.PagamentoRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,7 +13,7 @@ public class FinanceiroServices {
     }
 
     public Double somaPagamentoDoDia(String data) {
-        return pagamentoRepository.sumDayPayment(data);
+        return pagamentoRepository.sumDayPagamento(data);
     }
 
     public Double somaPorDatas(String dataInicial, String dataFinal) {

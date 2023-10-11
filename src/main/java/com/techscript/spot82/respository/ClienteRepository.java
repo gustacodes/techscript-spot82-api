@@ -1,11 +1,11 @@
-package com.parking82.api.respository;
+package com.techscript.spot82.respository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.parking82.api.entities.Cliente;
+import com.techscript.spot82.entities.Cliente;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
-    Cliente findByPlate(String plate);
+    Cliente findByPlaca(String placa);
 
 }

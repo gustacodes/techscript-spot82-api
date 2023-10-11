@@ -1,4 +1,4 @@
-package com.parking82.api.entities;
+package com.techscript.spot82.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;

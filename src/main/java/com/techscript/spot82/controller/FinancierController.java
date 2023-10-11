@@ -1,6 +1,6 @@
-package com.parking82.api.controller;
+package com.techscript.spot82.controller;
 
-import com.parking82.api.services.FinanceiroServices;
+import com.techscript.spot82.services.FinanceiroServices;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

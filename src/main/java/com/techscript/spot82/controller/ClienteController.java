@@ -1,19 +1,19 @@
-package com.parking82.api.controller;
+package com.techscript.spot82.controller;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import com.parking82.api.respository.PagamentoRepository;
-import com.parking82.api.respository.VagaRepository;
+import com.techscript.spot82.respository.PagamentoRepository;
+import com.techscript.spot82.respository.VagaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.parking82.api.entities.Cliente;
-import com.parking82.api.services.ClienteServices;
+import com.techscript.spot82.entities.Cliente;
+import com.techscript.spot82.services.ClienteServices;
 
 @RestController
 @RequestMapping("/clientes")
@@ -21,14 +21,14 @@ public class ClienteController {
     
     private ClienteServices clienteServices;
 
-    @Autowired
     private VagaRepository vagaRepository;
 
-    @Autowired
     private PagamentoRepository pagamentoRepository;
 
-    public ClienteController(ClienteServices clienteServices) {
+    public ClienteController(ClienteServices clienteServices, VagaRepository vagaRepository, PagamentoRepository pagamentoRepository) {
         this.clienteServices = clienteServices;
+        this.vagaRepository = vagaRepository;
+        this.pagamentoRepository = pagamentoRepository;
     }
 
     @GetMapping
@@ -40,7 +40,7 @@ public class ClienteController {
     public ResponseEntity<Cliente> salvar(@RequestBody Cliente cliente) {
 
         cliente.setData(LocalDate.now());
-        vagaRepository.save(cliente.getVaga());
+        vagaRepository.save(cliente.getVagaCliente());
         pagamentoRepository.save(cliente.getPagamento());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -77,7 +77,7 @@ public class ClienteController {
                 "\n\n\t\t\t\t\tCLIENTE: " + cliente.getNome() +
                 "\t\t\t\t\t\tVEÍCULO: " + cliente.getVeiculo() +
                 "\n\t\t\t\t\tPLACA: " + cliente.getPlaca() +
-                "\t\t\t\t\t\t\t\t\tVAGA: " + cliente.getVaga().getSpot() +
+                "\t\t\t\t\t\t\t\t\tVAGA: " + cliente.getVagaCliente().getVaga() +
                 "\n\t\t\t\t\tENTRADA: " + cliente.getHoraEntrada() +
                 "\t\t\t\t\t\t\t\t\tSAÍDA: " + cliente.getHoraSaida() +
                 "\n\n\n\n\t\t\t\t\t\t\t\t\t\t\t\tPERMANÊNCIA: " + cliente.getPeriodo() +

@@ -1,4 +1,4 @@
-package com.parking82.api.entities;
+package com.techscript.spot82.entities;
 
 import java.time.LocalDate;
 
@@ -27,6 +27,6 @@ public class Cliente {
     private Pagamento pagamento;
     @ManyToOne
     @JoinColumn(name = "vagancy_id")
-    private Vaga vaga;
+    private Vaga vagaCliente;
 
 }
