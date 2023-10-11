@@ -9,26 +9,22 @@ import java.util.List;
 import com.techscript.spot82.entities.Vaga;
 import com.techscript.spot82.respository.PagamentoRepository;
 import com.techscript.spot82.respository.VagaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import com.techscript.spot82.entities.Cliente;
 import com.techscript.spot82.respository.ClienteRepository;
 
 @Service
+@AllArgsConstructor
 public class ClienteServices {
 
     private ClienteRepository clienteRepository;
 
-    @Autowired
     private VagaRepository vagaRepository;
 
-    @Autowired
     private PagamentoRepository pagamentoRepository;
 
-    public ClienteServices(ClienteRepository clienteRepository) {
-        this.clienteRepository = clienteRepository;
-    }
 
     public Cliente save(Cliente cliente) {
 
@@ -59,8 +55,8 @@ public class ClienteServices {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
-        LocalTime entrada = LocalTime.parse(cliente.getHoraEntrada().toString(), formatter);
-        LocalTime saida = LocalTime.parse(cliente.getHoraSaida().toString(), formatter);
+        LocalTime entrada = LocalTime.parse(cliente.getHoraEntrada(), formatter);
+        LocalTime saida = LocalTime.parse(cliente.getHoraSaida(), formatter);
 
         Duration intervalo = Duration.between(entrada, saida);
 
@@ -86,7 +82,7 @@ public class ClienteServices {
 
     public Cliente recibo(Cliente cliente) {
 
-        var vaga = findById(cliente.getId());
+        findById(cliente.getId());
         clienteRepository.deleteById(cliente.getId());
         vagaRepository.deleteById(cliente.getId());
 

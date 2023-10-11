@@ -1,45 +1,40 @@
 package com.techscript.spot82.controller;
 
+import com.techscript.spot82.entities.Cliente;
+import com.techscript.spot82.respository.PagamentoRepository;
+import com.techscript.spot82.respository.VagaRepository;
+import com.techscript.spot82.services.ClienteServices;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import com.techscript.spot82.respository.PagamentoRepository;
-import com.techscript.spot82.respository.VagaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import com.techscript.spot82.entities.Cliente;
-import com.techscript.spot82.services.ClienteServices;
-
 @RestController
+@AllArgsConstructor
 @RequestMapping("/clientes")
 public class ClienteController {
-    
+
     private ClienteServices clienteServices;
 
     private VagaRepository vagaRepository;
 
     private PagamentoRepository pagamentoRepository;
 
-    public ClienteController(ClienteServices clienteServices, VagaRepository vagaRepository, PagamentoRepository pagamentoRepository) {
-        this.clienteServices = clienteServices;
-        this.vagaRepository = vagaRepository;
-        this.pagamentoRepository = pagamentoRepository;
-    }
-
     @GetMapping
     public ResponseEntity<List<Cliente>> listar() {
         return ResponseEntity.ok().body(clienteServices.list());
     }
 
-    @PostMapping("/registrar")
+    @PostMapping
     public ResponseEntity<Cliente> salvar(@RequestBody Cliente cliente) {
 
         cliente.setData(LocalDate.now());
+        
         vagaRepository.save(cliente.getVagaCliente());
         pagamentoRepository.save(cliente.getPagamento());
 
@@ -50,20 +45,19 @@ public class ClienteController {
 
     }
 
-    @DeleteMapping("/fechar/{placa}")
+    @DeleteMapping("/{placa}")
     public ResponseEntity<?> finalizar(@PathVariable String placa) {
 
         Cliente cliente = clienteServices.findByPlate(placa);
 
-        if(cliente == null) {
+        if (cliente == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado. Por favor, verifique a placa informada");
         }
 
         clienteServices.recibo(cliente);
 
-        LocalDate data = LocalDate.now();
         DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern( "HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
         cliente.setHoraSaida(LocalTime.now().format(formatter));
 
@@ -81,7 +75,7 @@ public class ClienteController {
                 "\n\t\t\t\t\tENTRADA: " + cliente.getHoraEntrada() +
                 "\t\t\t\t\t\t\t\t\tSAÍDA: " + cliente.getHoraSaida() +
                 "\n\n\n\n\t\t\t\t\t\t\t\t\t\t\t\tPERMANÊNCIA: " + cliente.getPeriodo() +
-                "\n\t\t\t\t\t\t\t\t\t\t\t\t Á PAGAR: R$ "+ cliente.getPagamento().getPagamento() +
+                "\n\t\t\t\t\t\t\t\t\t\t\t\t Á PAGAR: R$ " + cliente.getPagamento().getPagamento() +
                 "\n\n\t\t\t\tCNPJ: 99.107.370/0001-90 - Contato (82) 98162-1126 - E-mail parking82@contato.com" +
                 "\n\t\t\t\t\t\t\t\tPaking 82 - Soluções em estacionamentos ©");
     }
