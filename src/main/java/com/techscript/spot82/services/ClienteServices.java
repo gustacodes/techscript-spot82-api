@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import com.techscript.spot82.entities.Vaga;
+import com.techscript.spot82.enums.Status;
 import com.techscript.spot82.respository.PagamentoRepository;
 import com.techscript.spot82.respository.VagaRepository;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,7 @@ public class ClienteServices {
 
     public Cliente save(Cliente cliente) {
 
-        cliente.getVagaCliente().setStatus("Ocupada");
+        cliente.getVagaCliente().setStatus(Status.DISPONIVEL);
         return clienteRepository.save(cliente);
 
     }
