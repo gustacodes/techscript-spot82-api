@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface UsuarioRespository extends JpaRepository<Usuario, Long> {
 
     Optional<Usuario> email(String email);
-
+    Optional<Usuario> papel(String papel);
 }

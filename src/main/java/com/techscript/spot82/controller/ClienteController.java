@@ -71,7 +71,7 @@ public class ClienteController {
                 "\n\n\t\t\t\t\tCLIENTE: " + cliente.getNome() +
                 "\t\t\t\t\t\tVEÍCULO: " + cliente.getVeiculo() +
                 "\n\t\t\t\t\tPLACA: " + cliente.getPlaca() +
-                "\t\t\t\t\t\t\t\t\tVAGA: " + cliente.getVagaCliente().getVaga() +
+                "\t\t\t\t\t\t\t\t\tVAGA: " + cliente.getVagaCliente().getQuantidadeDeVagas() +
                 "\n\t\t\t\t\tENTRADA: " + cliente.getHoraEntrada() +
                 "\t\t\t\t\t\t\t\t\tSAÍDA: " + cliente.getHoraSaida() +
                 "\n\n\n\n\t\t\t\t\t\t\t\t\t\t\t\tPERMANÊNCIA: " + cliente.getPeriodo() +
