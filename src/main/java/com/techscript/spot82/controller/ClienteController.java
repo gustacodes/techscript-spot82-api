@@ -1,6 +1,8 @@
 package com.techscript.spot82.controller;
 
 import com.techscript.spot82.entities.Cliente;
+import com.techscript.spot82.entities.Vaga;
+import com.techscript.spot82.enums.Status;
 import com.techscript.spot82.respository.PagamentoRepository;
 import com.techscript.spot82.respository.VagaRepository;
 import com.techscript.spot82.services.ClienteServices;
@@ -34,14 +36,15 @@ public class ClienteController {
     public ResponseEntity<Cliente> salvar(@RequestBody Cliente cliente) {
 
         cliente.setData(LocalDate.now());
-        
-        vagaRepository.save(cliente.getVagaCliente());
+
         pagamentoRepository.save(cliente.getPagamento());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         cliente.setHoraEntrada(LocalTime.now().format(formatter));
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(clienteServices.save(cliente));
+        Cliente clt = clienteServices.save(cliente);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(clt);
 
     }
 
