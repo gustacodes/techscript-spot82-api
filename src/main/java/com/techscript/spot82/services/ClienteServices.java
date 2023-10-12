@@ -1,20 +1,19 @@
 package com.techscript.spot82.services;
 
-import java.text.DecimalFormat;
-import java.time.Duration;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-
+import com.techscript.spot82.entities.Cliente;
 import com.techscript.spot82.entities.Vaga;
 import com.techscript.spot82.enums.Status;
+import com.techscript.spot82.respository.ClienteRepository;
 import com.techscript.spot82.respository.PagamentoRepository;
 import com.techscript.spot82.respository.VagaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import com.techscript.spot82.entities.Cliente;
-import com.techscript.spot82.respository.ClienteRepository;
+import java.text.DecimalFormat;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -29,7 +28,12 @@ public class ClienteServices {
 
     public Cliente save(Cliente cliente) {
 
-        cliente.getVagaCliente().setStatus(Status.DISPONIVEL);
+        Vaga vaga = vagaRepository.findById(cliente.getVagaCliente().getQuantidadeDeVagas()).get();
+        vaga.setStatus(Status.OCUPADA);
+        cliente.setVagaCliente(vaga);
+
+        vagaRepository.save(vaga);
+
         return clienteRepository.save(cliente);
 
     }
@@ -48,7 +52,7 @@ public class ClienteServices {
 
     public Vaga findById(Long id) {
 
-        return vagaRepository.findById(id).get();
+        return vagaRepository.quantidadeDeVagas(id);
 
     }
 
@@ -85,7 +89,9 @@ public class ClienteServices {
 
         findById(cliente.getId());
         clienteRepository.deleteById(cliente.getId());
-        vagaRepository.deleteById(cliente.getId());
+        Vaga vaga = vagaRepository.findById(cliente.getVagaCliente().getQuantidadeDeVagas()).get();
+        vaga.setStatus(Status.DISPONIVEL);
+        vagaRepository.save(vaga);
 
         return cliente;
     }
