@@ -37,9 +37,9 @@ public class ClienteServices {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         cliente.setHoraEntrada(LocalTime.now().format(formatter));
 
-        Vaga vaga = vagaRepository.findById(cliente.getVagaCliente().getQuantidadeDeVagas()).get();
+        Vaga vaga = vagaRepository.findById(cliente.getVaga().getVagaDoCliente()).get();
         vaga.setStatus(Status.OCUPADA);
-        cliente.setVagaCliente(vaga);
+        cliente.setVaga(vaga);
 
         vagaRepository.save(vaga);
 
@@ -61,7 +61,7 @@ public class ClienteServices {
 
     public Vaga findById(Long id) {
 
-        return vagaRepository.quantidadeDeVagas(id);
+        return vagaRepository.vagaDoCliente(id);
 
     }
 
@@ -104,7 +104,7 @@ public class ClienteServices {
 
         findById(cliente.getId());
         clienteRepository.deleteById(cliente.getId());
-        Vaga vaga = vagaRepository.findById(cliente.getVagaCliente().getQuantidadeDeVagas()).get();
+        Vaga vaga = vagaRepository.findById(cliente.getVaga().getVagaDoCliente()).get();
         vaga.setStatus(Status.DISPONIVEL);
         vagaRepository.save(vaga);
 

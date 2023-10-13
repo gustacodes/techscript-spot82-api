@@ -26,6 +26,6 @@ public class Cliente {
     private Pagamento pagamento;
     @ManyToOne
     @JoinColumn(name = "vaga_id")
-    private Vaga vagaCliente;
+    private Vaga vaga;
 
 }
