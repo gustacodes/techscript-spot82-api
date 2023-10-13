@@ -3,7 +3,7 @@ package com.techscript.spot82.services;
 import com.techscript.spot82.entities.Cliente;
 import com.techscript.spot82.entities.Vaga;
 import com.techscript.spot82.enums.Status;
-import com.techscript.spot82.exceptions.ClienteException;
+import com.techscript.spot82.exceptions.ClienteExceptions;
 import com.techscript.spot82.respository.ClienteRepository;
 import com.techscript.spot82.respository.PagamentoRepository;
 import com.techscript.spot82.respository.VagaRepository;
@@ -29,10 +29,6 @@ public class ClienteServices {
 
 
     public Cliente save(Cliente cliente) {
-
-        if (cliente.getVaga().getVagaDoCliente() == null) {
-            throw new ClienteException("Defina a vaga do cliente");
-        }
 
         cliente.setData(LocalDate.now());
         cliente.getPagamento().setPagamento(0.0);
