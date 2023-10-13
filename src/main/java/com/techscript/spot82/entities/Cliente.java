@@ -2,6 +2,8 @@ package com.techscript.spot82.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -13,8 +15,11 @@ public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Nome do cliente obrigatório")
     private String nome;
+    @NotBlank(message = "Veículo obrigatório")
     private String veiculo;
+    @NotBlank(message = "Placa obrigatória")
     private String placa;
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate data;

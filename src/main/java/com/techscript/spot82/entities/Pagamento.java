@@ -2,6 +2,7 @@ package com.techscript.spot82.entities;
 
 import com.techscript.spot82.enums.FormaDePagamento;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Entity
