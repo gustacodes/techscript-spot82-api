@@ -1,9 +1,7 @@
 package com.techscript.spot82.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.techscript.spot82.enums.FormaDePagamento;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -14,7 +12,8 @@ public class Pagamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String data;
-    private String formaDePagamento;
+    @Enumerated(EnumType.STRING)
+    private FormaDePagamento formaDePagamento;
     private Double pagamento;
 
 }
