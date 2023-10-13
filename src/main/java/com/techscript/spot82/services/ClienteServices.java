@@ -3,6 +3,7 @@ package com.techscript.spot82.services;
 import com.techscript.spot82.entities.Cliente;
 import com.techscript.spot82.entities.Vaga;
 import com.techscript.spot82.enums.Status;
+import com.techscript.spot82.exceptions.ClienteException;
 import com.techscript.spot82.respository.ClienteRepository;
 import com.techscript.spot82.respository.PagamentoRepository;
 import com.techscript.spot82.respository.VagaRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -28,9 +30,21 @@ public class ClienteServices {
 
     public Cliente save(Cliente cliente) {
 
-        Vaga vaga = vagaRepository.findById(cliente.getVagaCliente().getQuantidadeDeVagas()).get();
+        if (cliente.getVaga().getVagaDoCliente() == null) {
+            throw new ClienteException("Defina a vaga do cliente");
+        }
+
+        cliente.setData(LocalDate.now());
+        cliente.getPagamento().setPagamento(0.0);
+
+        pagamentoRepository.save(cliente.getPagamento());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        cliente.setHoraEntrada(LocalTime.now().format(formatter));
+
+        Vaga vaga = vagaRepository.findById(cliente.getVaga().getVagaDoCliente()).get();
         vaga.setStatus(Status.OCUPADA);
-        cliente.setVagaCliente(vaga);
+        cliente.setVaga(vaga);
 
         vagaRepository.save(vaga);
 
@@ -52,13 +66,15 @@ public class ClienteServices {
 
     public Vaga findById(Long id) {
 
-        return vagaRepository.quantidadeDeVagas(id);
+        return vagaRepository.vagaDoCliente(id);
 
     }
 
     public Cliente saida(Cliente cliente) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        cliente.setHoraSaida(LocalTime.now().format(formatter));
 
         LocalTime entrada = LocalTime.parse(cliente.getHoraEntrada(), formatter);
         LocalTime saida = LocalTime.parse(cliente.getHoraSaida(), formatter);
@@ -69,7 +85,7 @@ public class ClienteServices {
         String periodo = localTime.format(formatter);
         cliente.setPeriodo(periodo);
 
-        double total = intervalo.toMinutes() % 60 * 0.0233333333333333;
+        Double total = intervalo.toMinutes() % 60 * 0.0233333333333333;
 
         DecimalFormat decimalFormat = new DecimalFormat("#.00");
         String totalFormatter = decimalFormat.format(total);
@@ -80,16 +96,20 @@ public class ClienteServices {
             cliente.getPagamento().setPagamento(Double.parseDouble(totalFormatter));
         }
 
+        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        cliente.getPagamento().setData(LocalDate.now().format(formatterDate));
         pagamentoRepository.save(cliente.getPagamento());
 
         return cliente;
+
     }
 
     public Cliente recibo(Cliente cliente) {
 
         findById(cliente.getId());
         clienteRepository.deleteById(cliente.getId());
-        Vaga vaga = vagaRepository.findById(cliente.getVagaCliente().getQuantidadeDeVagas()).get();
+        Vaga vaga = vagaRepository.findById(cliente.getVaga().getVagaDoCliente()).get();
         vaga.setStatus(Status.DISPONIVEL);
         vagaRepository.save(vaga);
 

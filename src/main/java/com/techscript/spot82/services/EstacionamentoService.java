@@ -9,9 +9,6 @@ import com.techscript.spot82.respository.VagaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 @AllArgsConstructor
 public class EstacionamentoService {
@@ -26,7 +23,7 @@ public class EstacionamentoService {
 
         for (long i = 1; i <= estacionamento.getVaga(); i++) {
             Vaga vaga = new Vaga();
-            vaga.setQuantidadeDeVagas(i);
+            vaga.setVagaDoCliente(i);
             vaga.setStatus(Status.DISPONIVEL);
             vagaRepository.save(vaga);
         }
