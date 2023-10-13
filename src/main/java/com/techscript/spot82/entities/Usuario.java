@@ -16,7 +16,7 @@ public class Usuario {
     @NotBlank(message = "Nome obrigatório")
     private String nome;
     @NotBlank(message = "E-mail obrigatório")
-    @Email
+    @Email(message = "Informe um e-mail válido")
     private String email;
     @NotBlank(message = "Defina sua senha")
     private String password;
