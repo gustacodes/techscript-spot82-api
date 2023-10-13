@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/financeiro")
-public class FinancierController {
+public class FinanceiroController {
 
     private FinanceiroServices financeiroServices;
 

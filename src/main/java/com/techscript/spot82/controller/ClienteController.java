@@ -1,7 +1,7 @@
 package com.techscript.spot82.controller;
 
 import com.techscript.spot82.entities.Cliente;
-import com.techscript.spot82.exceptions.ClienteException;
+import com.techscript.spot82.exceptions.ClienteExceptions;
 import com.techscript.spot82.respository.PagamentoRepository;
 import com.techscript.spot82.respository.VagaRepository;
 import com.techscript.spot82.services.ClienteServices;
@@ -33,7 +33,7 @@ public class ClienteController {
         List<Cliente> clientes = clienteServices.list();
 
         if (clientes.isEmpty()) {
-            throw new ClienteException("Não há clientes no momento.");
+            throw new ClienteExceptions("Não há clientes no momento.");
         }
 
         return ResponseEntity.ok().body(clienteServices.list());
@@ -62,7 +62,7 @@ public class ClienteController {
         Cliente cliente = clienteServices.findByPlate(placa);
 
         if (cliente == null) {
-            throw new ClienteException("Placa inexistente no sistema! Verifique e tente novamente.");
+            throw new ClienteExceptions("Placa inexistente no sistema! Verifique e tente novamente.");
         }
 
         clienteServices.recibo(cliente);
