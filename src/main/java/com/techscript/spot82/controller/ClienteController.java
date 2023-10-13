@@ -1,7 +1,7 @@
 package com.techscript.spot82.controller;
 
 import com.techscript.spot82.entities.Cliente;
-import com.techscript.spot82.exceptions.VagaException;
+import com.techscript.spot82.exceptions.ClienteException;
 import com.techscript.spot82.respository.PagamentoRepository;
 import com.techscript.spot82.respository.VagaRepository;
 import com.techscript.spot82.services.ClienteServices;
@@ -33,7 +33,7 @@ public class ClienteController {
         List<Cliente> clientes = clienteServices.list();
 
         if (clientes.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(clientes);
+            throw new ClienteException("Não há clientes no momento.");
         }
 
         return ResponseEntity.ok().body(clienteServices.list());
@@ -42,28 +42,18 @@ public class ClienteController {
     @PostMapping
     public ResponseEntity<Object> salvar(@RequestBody @Valid Cliente cliente, BindingResult result) {
 
-        if (cliente.getVaga().getVagaDoCliente() == null) {
-            throw new VagaException("Defina a vaga do cliente");
-        }
-
         if (result.hasErrors()) {
 
             Map<String, String> erros = new HashMap<>();
-
             result.getFieldErrors().forEach(error -> erros.put(error.getField(), error.getDefaultMessage()));
-
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erros);
 
         }
 
         Cliente clt = clienteServices.save(cliente);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(clt);
 
-    }
-
-    @ExceptionHandler(VagaException.class)
-    public ResponseEntity<Object> handleVagaException(VagaException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     @DeleteMapping("/{placa}")
@@ -72,7 +62,7 @@ public class ClienteController {
         Cliente cliente = clienteServices.findByPlate(placa);
 
         if (cliente == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado. Por favor, verifique a placa informada");
+            throw new ClienteException("Placa inexistente no sistema! Verifique e tente novamente.");
         }
 
         clienteServices.recibo(cliente);
