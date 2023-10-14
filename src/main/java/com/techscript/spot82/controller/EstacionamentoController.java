@@ -1,7 +1,7 @@
 package com.techscript.spot82.controller;
 
 import com.techscript.spot82.entities.Estacionamento;
-import com.techscript.spot82.exceptions.EstacionamentoExceptions;
+import com.techscript.spot82.services.ClienteServices;
 import com.techscript.spot82.services.EstacionamentoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @AllArgsConstructor
@@ -22,6 +23,7 @@ import java.util.Map;
 public class EstacionamentoController {
 
     private EstacionamentoService service;
+    private ClienteServices clienteServices;
 
     @PostMapping
     public ResponseEntity<Object> salvar(@RequestBody @Valid Estacionamento estacionamento, BindingResult result) {

@@ -1,5 +1,6 @@
 package com.techscript.spot82.controller;
 
+import com.techscript.spot82.configuracao.GravarDados;
 import com.techscript.spot82.entities.Cliente;
 import com.techscript.spot82.exceptions.ClienteExceptions;
 import com.techscript.spot82.respository.PagamentoRepository;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @AllArgsConstructor
@@ -26,6 +28,8 @@ public class ClienteController {
     private VagaRepository vagaRepository;
 
     private PagamentoRepository pagamentoRepository;
+
+    private GravarDados gravarDados;
 
     @GetMapping
     public ResponseEntity<List<Cliente>> listar() {
@@ -40,19 +44,21 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> salvar(@RequestBody @Valid Cliente cliente, BindingResult result) {
+    public ResponseEntity<Void> salvar(@RequestBody @Valid Cliente cliente, BindingResult result) throws ExecutionException, InterruptedException {
 
         if (result.hasErrors()) {
 
             Map<String, String> erros = new HashMap<>();
             result.getFieldErrors().forEach(error -> erros.put(error.getField(), error.getDefaultMessage()));
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erros);
+            return ResponseEntity.badRequest().build();
 
         }
 
-        Cliente clt = clienteServices.save(cliente);
+        gravarDados.gravarDadosDoUsuario(cliente, "clientes");
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(clt);
+        clienteServices.save(cliente);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
 
     }
 
